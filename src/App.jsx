@@ -10,7 +10,7 @@ const App = () => {
   return (
     <>
       <NavBar />
-      <Container className="text-secondary">
+      <Container>
         <Routes>
           <Route path="/" element={<Chat />} />
           <Route path="/login" element={<Login />} />
