@@ -1,20 +1,37 @@
-import React from "react";
+import { useContext } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
+import { Container } from "react-bootstrap";
 import Chat from "./pages/Chat";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import { Container } from "react-bootstrap";
 import NavBar from "./components/NavBar";
+import { AuthContext } from "./context/AuthContext";
 
 const App = () => {
+  const { user } = useContext(AuthContext);
+
   return (
     <>
       <NavBar />
       <Container>
         <Routes>
-          <Route path="/" element={<Chat />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          {/* Protected route */}
+          <Route
+            path="/"
+            element={user ? <Chat /> : <Navigate to="/login" />}
+          />
+
+          {/* Auth routes */}
+          <Route
+            path="/login"
+            element={user ? <Navigate to="/" /> : <Login />}
+          />
+          <Route
+            path="/register"
+            element={user ? <Navigate to="/" /> : <Register />}
+          />
+
+          {/* Fallback */}
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Container>
