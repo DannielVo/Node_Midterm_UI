@@ -16,13 +16,11 @@ const NavBar = () => {
       <Container>
         <h2>
           <Link to="/" className="link-light text-decoration-none">
-            Chat App
+            Emoji Chat
           </Link>
         </h2>
 
-        {user && (
-          <span className="text-warning">Logged in as {user.name}</span>
-        )}
+        {user && <span className="text-warning">Logged in as {user.name}</span>}
 
         <Nav>
           <Stack direction="horizontal" gap={3}>
