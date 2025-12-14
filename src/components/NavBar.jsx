@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { Navbar, Container, Nav, Stack, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import Notification from "./chat/Notification";
 
 const NavBar = () => {
   const { user, setUser } = useContext(AuthContext);
@@ -12,37 +13,86 @@ const NavBar = () => {
   };
 
   return (
-    <Navbar bg="dark" className="mb-4" style={{ height: "3.75rem" }}>
-      <Container>
-        <h2>
-          <Link to="/" className="link-light text-decoration-none">
+    <Navbar bg="dark" variant="dark" expand="lg" className="mb-4 shadow-sm">
+      <Container className="p-3">
+        {/* Logo / Brand */}
+        <Navbar.Brand as={Link} to="/" className="d-flex align-items-center">
+          <span
+            style={{ fontWeight: "700", fontSize: "1.5rem", color: "#f0ad4e" }}
+          >
             Emoji Chat
-          </Link>
-        </h2>
+          </span>
+        </Navbar.Brand>
 
-        {user && <span className="text-warning">Logged in as {user.name}</span>}
+        {/* Responsive toggle */}
+        <Navbar.Toggle aria-controls="navbar-nav" />
 
-        <Nav>
-          <Stack direction="horizontal" gap={3}>
-            {!user ? (
+        <Navbar.Collapse id="navbar-nav">
+          <Nav className="ms-auto align-items-center">
+            {user ? (
               <>
-                <Link to="/login" className="link-light text-decoration-none">
+                <Notification />
+                <Stack
+                  direction="horizontal"
+                  gap={3}
+                  className="align-items-center"
+                >
+                  <Stack
+                    direction="horizontal"
+                    gap={2}
+                    className="align-items-center"
+                  >
+                    <div
+                      style={{
+                        width: "32px",
+                        height: "32px",
+                        borderRadius: "50%",
+                        backgroundColor: "#f0ad4e",
+                        color: "#fff",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontWeight: "700",
+                        fontSize: "0.9rem",
+                      }}
+                    >
+                      {user.name.charAt(0).toUpperCase()}
+                    </div>
+                    <span className="text-warning fw-medium">
+                      {user.name.length > 12
+                        ? user.name.slice(0, 12) + "…"
+                        : user.name}
+                    </span>
+                  </Stack>
+                  <Button
+                    variant="outline-warning"
+                    size="md"
+                    onClick={handleLogout}
+                    style={{ minWidth: "80px" }}
+                  >
+                    Logout
+                    <i className="fa-solid fa-arrow-right-from-bracket"></i>
+                  </Button>
+                </Stack>
+              </>
+            ) : (
+              <Stack direction="horizontal" gap={3}>
+                <Link
+                  to="/login"
+                  className="text-light text-decoration-none fw-medium"
+                >
                   Login
                 </Link>
                 <Link
                   to="/register"
-                  className="link-light text-decoration-none"
+                  className="text-light text-decoration-none fw-medium"
                 >
                   Register
                 </Link>
-              </>
-            ) : (
-              <Button variant="outline-light" size="sm" onClick={handleLogout}>
-                Logout
-              </Button>
+              </Stack>
             )}
-          </Stack>
-        </Nav>
+          </Nav>
+        </Navbar.Collapse>
       </Container>
     </Navbar>
   );
